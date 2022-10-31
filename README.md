@@ -7,6 +7,10 @@ sudo ./run_locally.sh
 ```
 
 Run without docker after ensuring the main dependencies are installed:
+```bash
+pip install -r requirements.txt
 ```
+Ensure your python environment is setup properly via pycharm or source activate commands
+```bash
 opentelemetry-instrument --traces_exporter otlp_proto_grpc gunicorn wombo.fastapi:app --workers 2 --worker-class uvicorn.workers.UvicornH11Worker --bind 0.0.0.0:8000
 ```
