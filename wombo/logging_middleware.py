@@ -57,6 +57,6 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             json_response_body = {"detail": repr(ex)}
             response = JSONResponse(json_response_body, status.HTTP_500_INTERNAL_SERVER_ERROR)
             logger.error(json_response_body, exc_info=True)
-        if request.url.path != "/":
-            logger.info(stats_json)
+
+        logger.info(stats_json)
         return response
