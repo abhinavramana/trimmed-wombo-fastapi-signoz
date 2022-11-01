@@ -50,5 +50,5 @@ app.add_middleware(
 @app.get("/")
 async def health_check():
     x = datetime.now()
-    logger.info(f"Random logs : {x}")
+    logger.warn(f"Random logs : {x}")
     return dict(now=x)

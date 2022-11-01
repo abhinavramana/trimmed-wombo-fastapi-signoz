@@ -1,6 +1,6 @@
 import logging
 import typing
-# import nest_asyncio # Should not be commented out
+import nest_asyncio # Should not be commented out
 
 """
 ***************************************************************************************************
@@ -16,7 +16,7 @@ is set to `True`
 
 logging.info("Initialized the logger...")
 
-# nest_asyncio.apply()  # Should not be commented out
+nest_asyncio.apply()  # Should not be commented out
 
 
 def convert_comma_separated_to_set(input_string: str) -> typing.Set[str]:

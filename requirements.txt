@@ -26,7 +26,6 @@ fakeredis==1.9.0
 immutabledict==2.2.1
 opentelemetry-distro==0.34b0
 opentelemetry-exporter-otlp==1.13.0
-opentelemetry-launcher==1.9.0
 backoff==1.11.1
 
 # Transitive
