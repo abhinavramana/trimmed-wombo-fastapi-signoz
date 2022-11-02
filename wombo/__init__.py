@@ -1,24 +1,13 @@
 import logging
-import typing
-import nest_asyncio # Should not be commented out
+import os
+import nest_asyncio
+from opentelemetry.instrumentation.logging import LoggingInstrumentor
 
-"""
-***************************************************************************************************
-ALERT: THIS FILE SHOULD NEVER CONTAIN ANY WOMBO PACKAGE IMPORTS
+LoggingInstrumentor().instrument(set_logging_format=True)
 
-This should never be taken out of the basic init because this is the first thing that should
-be initialized even before the imports
-***************************************************************************************************
-
-These functions do nothing if the root logger already has handlers configured, unless the keyword argument *force*
-is set to `True`
-"""
-
+# Disabling basicConfig to allow OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+if os.getenv("OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED", "false").lower() == "false":
+    logging.basicConfig(level=logging.INFO, force=True)  # Should happen before any logging
 logging.info("Initialized the logger...")
 
-nest_asyncio.apply()  # Should not be commented out
-
-
-def convert_comma_separated_to_set(input_string: str) -> typing.Set[str]:
-    list_of_strings = input_string.split(",")
-    return set(list_of_strings)
+nest_asyncio.apply()

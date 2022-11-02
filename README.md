@@ -9,6 +9,8 @@ sudo ./run_locally.sh
 Run without docker after ensuring the main dependencies are installed:
 ```bash
 pip install -r requirements.txt
+
+opentelemetry-bootstrap --action=install
 ```
 Ensure your python environment is setup properly via pycharm or source activate commands
 ```bash
