@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import BackgroundTasks, HTTPException, Request, status
 
 from wombo.logging_middleware import LoggingMiddleware
 
@@ -30,7 +31,6 @@ app = FastAPI(**opts)
 app.add_middleware(LoggingMiddleware)
 app.state.health_checks_since_neptune_check = 0
 
-
 # Manage the CORS Middleware being added to the app
 origins = []
 regex_origins = ""
@@ -47,8 +47,24 @@ app.add_middleware(
 )
 
 
-@app.get("/")
+@app.get("/log")
 async def health_check():
     x = datetime.now()
     logger.warn(f"Random logs : {x}")
     return dict(now=x)
+
+
+@app.get("/exception_dont_works")
+async def exception_dont_works():
+    try:
+        raise ValueError("sadness")
+    except Exception as ex:
+        logger.error(ex, exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Got sadness")
+
+
+@app.get("/exception_works")
+async def exception_works():
+    raise ValueError("sadness")
