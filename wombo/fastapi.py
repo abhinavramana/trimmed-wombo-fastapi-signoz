@@ -5,9 +5,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import BackgroundTasks, HTTPException, Request, status
 
+from starlette.middleware import Middleware
+
 from wombo.logging_middleware import LoggingMiddleware
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 # Decide if the current environment is production or testing
 opts = {
     "docs_url": "/signoz",
@@ -28,7 +31,10 @@ if ENABLE_OPENTELEMETRY:
 """
 
 app = FastAPI(**opts)
-app.add_middleware(LoggingMiddleware)
+# app.add_middleware(LoggingMiddleware)
+app.user_middleware.append(Middleware(LoggingMiddleware))
+app.middleware_stack = app.build_middleware_stack()
+
 app.state.health_checks_since_neptune_check = 0
 
 # Manage the CORS Middleware being added to the app

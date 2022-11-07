@@ -11,6 +11,7 @@ from starlette.responses import JSONResponse
 
 logger = logging.getLogger(__name__)
 
+logger.setLevel(logging.INFO)
 
 def bytes_to_dict(bytes_object: bytes) -> Dict[str, Any]:
     if bytes_object is None:
