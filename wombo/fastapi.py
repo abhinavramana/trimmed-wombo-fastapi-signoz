@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi import HTTPException, status
 from starlette.middleware import Middleware
 
+from wombo.db_table import create_clean_table_if_needed
 from wombo.middleware import LoggingMiddleware, WomboCORSMiddleware
 
 logger = logging.getLogger(__name__)
@@ -28,6 +29,8 @@ if ENABLE_OPENTELEMETRY:
         # Add log_level=debug here
     )
 """
+
+create_clean_table_if_needed()
 
 app = FastAPI(**opts)
 app.state.health_checks_since_neptune_check = 0
