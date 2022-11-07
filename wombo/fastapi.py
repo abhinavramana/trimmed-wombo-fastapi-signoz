@@ -1,13 +1,12 @@
 # Normal third party imports
 import logging
 from datetime import datetime
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import BackgroundTasks, HTTPException, Request, status
 
+from fastapi import FastAPI
+from fastapi import HTTPException, status
 from starlette.middleware import Middleware
 
-from wombo.logging_middleware import LoggingMiddleware
+from wombo.middleware import LoggingMiddleware, WomboCORSMiddleware
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -31,26 +30,20 @@ if ENABLE_OPENTELEMETRY:
 """
 
 app = FastAPI(**opts)
-# app.add_middleware(LoggingMiddleware)
-app.user_middleware.append(Middleware(LoggingMiddleware))
-app.middleware_stack = app.build_middleware_stack()
-
 app.state.health_checks_since_neptune_check = 0
 
-# Manage the CORS Middleware being added to the app
-origins = []
-regex_origins = ""
 
-origins.append("https://www.wombo.net")
-origins.append("http://localhost:3000")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_origin_regex=regex_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+"""
+https://github.com/SigNoz/signoz/issues/1692: The add_middleware adds the middleware at the beginning (or top) of list,
+leading to a situation where logging middleware gets processed before the OpenTelemetry middleware. Since the trace is
+not started yet, you see the empty context. I added this workaround to push the logging middleware to the bottom, so
+it gets processed later when there is trace context
+"""
+
+app.user_middleware.append(Middleware(LoggingMiddleware))
+app.user_middleware.append(Middleware(WomboCORSMiddleware))
+app.middleware_stack = app.build_middleware_stack()
+logger.info("Initialized Middlewares...")
 
 
 @app.get("/log")

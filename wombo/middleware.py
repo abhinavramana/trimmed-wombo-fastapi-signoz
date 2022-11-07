@@ -2,16 +2,17 @@ import json
 import logging
 import time
 from typing import Any, Dict
-from fastapi import Request
+from fastapi import Request, FastAPI
 from starlette import status
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import ClientDisconnect
 from starlette.responses import JSONResponse
-
 
 logger = logging.getLogger(__name__)
 
 logger.setLevel(logging.INFO)
+
 
 def bytes_to_dict(bytes_object: bytes) -> Dict[str, Any]:
     if bytes_object is None:
@@ -61,3 +62,21 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
         logger.info(stats_json)
         return response
+
+
+class WomboCORSMiddleware(CORSMiddleware):
+    def __init__(self, app: FastAPI):
+        origins = []
+        regex_origins = ""
+
+        origins.append("https://www.wombo.net")
+        origins.append("http://localhost:3000")
+
+        super().__init__(
+            app=app,
+            allow_origins=origins,
+            allow_origin_regex=regex_origins,
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
