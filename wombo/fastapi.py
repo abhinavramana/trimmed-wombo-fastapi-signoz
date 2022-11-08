@@ -8,6 +8,7 @@ from starlette.middleware import Middleware
 
 from wombo.db_table import create_clean_table_if_needed
 from wombo.middleware import LoggingMiddleware, WomboCORSMiddleware
+from wombo.metrics import requests_counter, health_checks_counter
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -53,11 +54,13 @@ logger.info("Initialized Middlewares...")
 async def health_check():
     x = datetime.now()
     logger.warn(f"Random logs : {x}")
+    health_checks_counter.add(1)
     return dict(now=x)
 
 
 @app.get("/exception_dont_works")
 async def exception_dont_works():
+    requests_counter.add(1)
     try:
         raise ValueError("sadness")
     except Exception as ex:
