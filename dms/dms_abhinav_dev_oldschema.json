@@ -1,0 +1,175 @@
+{
+  "rules": [
+    {
+      "rule_id": "user_to_user",
+      "rule_name": "create User vertices",
+      "table_name": "users",
+      "vertex_definitions": [
+        {
+          "vertex_id_template": "{id}",
+          "vertex_label": "User",
+          "vertex_definition_id": "1",
+          "vertex_properties": [
+            {
+              "property_name": "user_id",
+              "property_value_template": "{id}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "username",
+              "property_value_template": "{username}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "created_at",
+              "property_value_template": "{created_at}",
+              "property_value_type": "Date "
+            },
+            {
+              "property_name": "updated_at",
+              "property_value_template": "{updated_at}",
+              "property_value_type": "Date"
+            },
+            {
+              "property_name": "deleted_at",
+              "property_value_template": "{deleted_at}",
+              "property_value_type": "Date"
+            },
+            {
+              "property_name": "profile_bio",
+              "property_value_template": "{profile_bio}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "is_flagged",
+              "property_value_template": "{is_flagged}",
+              "property_value_type": "Boolean"
+            },
+            {
+              "property_name": "website_link",
+              "property_value_template": "{website_link}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "is_public",
+              "property_value_template": "{is_public}",
+              "property_value_type": "Boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "dream_to_dream",
+      "rule_name": "create dream vertices",
+      "table_name": "art_gallery",
+      "vertex_definitions": [
+        {
+          "vertex_id_template": "{id}",
+          "vertex_label": "Dream",
+          "vertex_definition_id": "2",
+          "vertex_properties": [
+            {
+              "property_name": "art_id",
+              "property_value_template": "{id}",
+              "property_value_type": "Int"
+            },
+            {
+              "property_name": "user_id",
+              "property_value_template": "{user_id}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "task_id",
+              "property_value_template": "{task_id}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "is_flagged",
+              "property_value_template": "{is_flagged}",
+              "property_value_type": "Boolean"
+            },
+            {
+              "property_name": "is_public",
+              "property_value_template": "{is_public}",
+              "property_value_type": "Boolean"
+            },
+            {
+              "property_name": "name",
+              "property_value_template": "{name}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "prompt",
+              "property_value_template": "{prompt}",
+              "property_value_type": "String"
+            },
+            {
+              "property_name": "prompt_visible",
+              "property_value_template": "{prompt_visible}",
+              "property_value_type": "Boolean"
+            },
+            {
+              "property_name": "created_at",
+              "property_value_template": "{created_at}",
+              "property_value_type": "Date"
+            },
+            {
+              "property_name": "updated_at",
+              "property_value_template": "{updated_at}",
+              "property_value_type": "Date"
+            },
+            {
+              "property_name": "deleted_at",
+              "property_value_template": "{deleted_at}",
+              "property_value_type": "Date"
+            },
+            {
+              "property_name": "is_minted",
+              "property_value_template": "{is_minted}",
+              "property_value_type": "Boolean"
+            },
+            {
+              "property_name": "tags",
+              "property_value_template": "{tags}",
+              "property_value_type": "String[]"
+            },
+            {
+              "property_name": "style_id",
+              "property_value_template": "{style_id}",
+              "property_value_type": "Int"
+            },
+            {
+              "property_name": "input_image_id",
+              "property_value_template": "{input_image_id}",
+              "property_value_type": "String"
+            }
+          ]
+        }
+      ],
+      "edge_definitions": [
+        {
+          "from_vertex": {
+            "vertex_id_template": "{user_id}",
+            "vertex_definition_id": "1"
+          },
+          "to_vertex": {
+            "vertex_id_template": "{id}",
+            "vertex_definition_id": "2"
+          },
+          "edge_id_template": {
+            "label": "UserCreatedDream",
+            "template": "{user_id}_UserCreatedDream_{id}"
+          },
+          "edge_properties": [
+            {
+              "property_name": "created_at",
+              "property_value_template": "{created_at}",
+              "property_value_type": "Date"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
