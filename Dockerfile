@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y libpq-dev curl ffmpeg
 
 WORKDIR /app/
 # Actual python app
-EXPOSE 8000
+EXPOSE 8124
 
 COPY --from=compile-image /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
