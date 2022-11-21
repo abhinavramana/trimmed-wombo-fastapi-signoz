@@ -7,25 +7,13 @@ from fastapi import HTTPException, status
 from starlette.middleware import Middleware
 
 from wombo.db_table import create_clean_table_if_needed
+from wombo.logger_stuff import get_logger
 from wombo.middleware import LoggingMiddleware, WomboCORSMiddleware
-from opentelemetry.trace import Status, StatusCode, get_current_span
 
 
-class LogErrorHandler(logging.Handler):
-    def emit(self, record):
-        span = get_current_span()
-        if span is not None:
-            if record.exc_info is not None:
-                exc_type, exc_value, tb = record.exc_info
-                if exc_value is not None:
-                    span.record_exception(exc_value)
-            if record.levelno >= logging.ERROR:
-                span.set_status(Status(StatusCode.ERROR, record.getMessage()))
 
 
-logger = logging.getLogger(__name__)
-logger.addHandler(LogErrorHandler())
-logger.setLevel(logging.INFO)
+logger = get_logger(__name__)
 # Decide if the current environment is production or testing
 opts = {
     "docs_url": "/signoz",

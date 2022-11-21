@@ -9,9 +9,9 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import ClientDisconnect
 from starlette.responses import JSONResponse
 
-logger = logging.getLogger(__name__)
+from wombo.logger_stuff import get_logger
 
-logger.setLevel(logging.INFO)
+logger = get_logger(__name__)
 
 
 def bytes_to_dict(bytes_object: bytes) -> Dict[str, Any]:
